@@ -1,7 +1,5 @@
 package com.axiomalaska.sos.injector.db;
 
-import java.util.Objects;
-
 import com.axiomalaska.sos.data.DocumentMember;
 import com.axiomalaska.sos.data.DocumentMemberImp;
 import com.google.common.base.Strings;
@@ -23,7 +21,9 @@ public class DatabaseSosInjectorHelper {
     }
     
     public static void requireNonNull(String name, Object value){
-        Objects.requireNonNull(value, name +  " cannot be null!");
+        if (value == null) {
+            throw new IllegalStateException(name + " must not be null!");
+        }
     }
     
     public static DocumentMember makeDocument(String name, String arcrole, String url,

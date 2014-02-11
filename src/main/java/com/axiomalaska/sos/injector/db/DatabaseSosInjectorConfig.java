@@ -80,9 +80,7 @@ public class DatabaseSosInjectorConfig {
 
     private static String getRequiredConfigString(Configuration config, String propertyName) {
         String value = config.getString(propertyName);
-        if (value == null) {
-            throw new IllegalStateException(propertyName + " must not be null!");
-        }
+        DatabaseSosInjectorHelper.requireNonNull(propertyName, value);
         return value;        
     }
 
