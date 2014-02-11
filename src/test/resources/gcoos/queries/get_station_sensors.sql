@@ -6,7 +6,7 @@ SELECT
   ,b.shortTypeName as sensor_short_name
   ,b.shortTypeName as sensor_long_name
   ,CASE
-    WHEN COUNT(*) = 1 NULL THEN a.verticalPosition
+    WHEN COUNT(*) = 1 THEN a.verticalPosition
     ELSE NULL
    END as sensor_height_meters -- use sensor.verticalPosition if there is only one sensor, otherwise it's a grouped profile (discard height)
 FROM sensor a
