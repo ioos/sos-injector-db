@@ -1,6 +1,5 @@
 package com.axiomalaska.sos.injector.db;
 
-import java.util.Objects;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
@@ -81,7 +80,9 @@ public class DatabaseSosInjectorConfig {
 
     private static String getRequiredConfigString(Configuration config, String propertyName) {
         String value = config.getString(propertyName);
-        Objects.requireNonNull(value, propertyName + " must not be null!");
+        if (value == null) {
+            throw new IllegalStateException(propertyName + " must not be null!");
+        }
         return value;        
     }
 
