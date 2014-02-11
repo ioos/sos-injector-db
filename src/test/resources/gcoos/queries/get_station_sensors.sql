@@ -5,10 +5,15 @@ SELECT
    a.sensorTypeId as sensor_database_id -- for linking in subsequent queries  
   ,b.shortTypeName as sensor_short_name
   ,b.shortTypeName as sensor_long_name
-  ,AVG(a.verticalPosition) as sensor_height_meters -- average the sensor heights to obtain a single value
+  ,CASE
+    WHEN COUNT(*) = 1 NULL THEN a.verticalPosition
+    ELSE NULL
+   END as sensor_height_meters -- use sensor.verticalPosition if there is only one sensor, otherwise it's a grouped profile (discard height)
 FROM sensor a
 JOIN sensorType b
   ON a.sensorTypeId = b.rowid
+JOIN platform c
+  ON a.platformId = c.rowid
 WHERE a.platformId = ?
 GROUP BY
    a.platformId
