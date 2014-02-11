@@ -5,15 +5,15 @@
 
 SELECT
    a.observationDate as observation_time
-  ,a.chlorphyll as observation_value
+  ,a.chlorophyll as observation_value
   ,b.verticalPosition as observation_height_meters
-FROM chlorphyll a
+FROM chlorophyll a
 JOIN sensor b
  ON a.sensorId = b.rowid
 WHERE b.platformId = ?
 AND ? IS NOT NULL --do nothing with the sensor_database_id
 AND a.observationDate > ?
-AND a.chlorphyll IS NOT NULL
-AND a.chlorphyll != -9999.0
+AND a.chlorophyll IS NOT NULL
+AND a.chlorophyll != -9999.0
 AND Datetime(a.observationDate) IS NOT NULL
 ORDER BY a.observationDate;
