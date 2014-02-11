@@ -1,5 +1,7 @@
 # sos-injector-db
 
+[![Build Status](https://api.travis-ci.org/ioos/sos-injector-db.png)](https://travis-ci.org/ioos/sos-injector-db)
+
 This project uses the [sos-injector](https://github.com/axiomalaska/sos-injector) Java library
 to read station information and observation values from an arbitrary database and inject
 them into an IOOS 52 North SOS.
