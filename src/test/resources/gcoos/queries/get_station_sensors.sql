@@ -12,8 +12,6 @@ SELECT
 FROM sensor a
 JOIN sensorType b
   ON a.sensorTypeId = b.rowid
-JOIN platform c
-  ON a.platformId = c.rowid
 WHERE a.platformId = ?
 GROUP BY
    a.platformId
