@@ -89,7 +89,7 @@ Queries all sensors for a station.
   * sensor_database_id - database key (for linking in subsequent queries)  
   * sensor_short_name
   * sensor_long_name
-  * *sensor_height_meters*
+  * *sensor_height_meters* (numeric)
   
 ### [get_sensor_phenomena.sql](src/test/resources/gcoos/queries/get_sensor_phenomena.sql)
 
