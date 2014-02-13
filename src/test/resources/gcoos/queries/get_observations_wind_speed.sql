@@ -6,7 +6,7 @@
 SELECT
    a.observationDate as observation_time
   ,a.windSpeed as observation_value
-  ,a.verticalPosition as observation_height_meters -- TODO not sensor height?
+  ,a.verticalPosition as observation_height_meters
 FROM winds a
 JOIN sensor b
  ON a.sensorId = b.rowid

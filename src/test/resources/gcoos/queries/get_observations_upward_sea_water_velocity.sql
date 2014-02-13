@@ -6,8 +6,7 @@
 SELECT
    a.observationDate as observation_time
   ,a.verticalVelocity as observation_value
-  ,b.verticalPosition as observation_height_meters
-  --TODO verticalDatum?
+  ,0 - a.verticalDatum as observation_height_meters
 FROM oceanCurrents a
 JOIN sensor b
  ON a.sensorId = b.rowid
