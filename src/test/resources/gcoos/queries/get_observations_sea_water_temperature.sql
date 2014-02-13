@@ -6,7 +6,7 @@
 SELECT
    a.observationDate as observation_time
   ,a.temperature as observation_value
-  ,a.verticalPosition as observation_height_meters --TODO not sensor height? why?
+  ,a.verticalPosition as observation_height_meters
 FROM waterTemperature a
 JOIN sensor b
  ON a.sensorId = b.rowid
