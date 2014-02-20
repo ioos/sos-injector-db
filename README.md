@@ -15,7 +15,8 @@ having to edit or compile Java.
 
 ## Running the application
 
- * Download the compiled sos-injector-db.jar (or use Maven to compile, mvn clean install)
+ * Download and unzip the [sos-injector-db distribution](https://github.com/ioos/sos-injector-db/releases)
+   (or clone the source code and use Maven to compile, mvn clean install)
  
  * Write configuration and SQL query files (see **Configuration/SQL files** section below)
  
