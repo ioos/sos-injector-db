@@ -17,16 +17,11 @@ import org.junit.Test;
 
 import com.axiomalaska.ioos.sos.GeomHelper;
 import com.axiomalaska.ioos.sos.exception.UnsupportedGeometryTypeException;
-import com.axiomalaska.phenomena.Phenomenon;
-import com.axiomalaska.sos.IObservationSubmitter;
-import com.axiomalaska.sos.IProcedureSubmitter;
 import com.axiomalaska.sos.ObservationRetriever;
 import com.axiomalaska.sos.SosInjector;
 import com.axiomalaska.sos.StationRetriever;
-import com.axiomalaska.sos.data.AbstractSosAsset;
 import com.axiomalaska.sos.data.ObservationCollection;
 import com.axiomalaska.sos.data.PublisherInfo;
-import com.axiomalaska.sos.data.SosSensor;
 import com.axiomalaska.sos.data.SosStation;
 import com.axiomalaska.sos.exception.InvalidObservationCollectionException;
 import com.axiomalaska.sos.exception.ObservationRetrievalException;
@@ -100,28 +95,11 @@ public class TestGCOOS {
     public void testSosInjector() throws InvalidObservationCollectionException, ObservationRetrievalException,
         //run the station and observation retrievers through a mock SosInjector
         UnsupportedSosAssetTypeException, StationCreationException, SosCommunicationException, UnsupportedGeometryTypeException {
-        new SosInjector(
+        SosInjector.mock(
              "mock-sos-injector"
             ,new DatabaseStationRetriever()
             ,new DatabaseObservationRetriever()
-            ,new IProcedureSubmitter() {
-                @Override
-                public boolean checkProcedureWithSos(AbstractSosAsset asset) {
-                    // NOOP (mock)
-                    return true;
-                }
-            }
-            ,new IObservationSubmitter() {
-                @Override
-                public void update(SosSensor sensor, Phenomenon phenomenon,
-                        ObservationRetriever observationRetriever)
-                        throws InvalidObservationCollectionException,
-                        ObservationRetrievalException,
-                        SosCommunicationException,
-                        UnsupportedGeometryTypeException {
-                    // NOOP (mock)
-                }
-            }
+            ,false
         ).update();
     }
 }
