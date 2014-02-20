@@ -30,10 +30,7 @@ SELECT
       WHEN d.name = 'NWLON' THEN 'tide_station'
       ELSE null
    END as station_platform_type -- see http://mmisw.org/ont/ioos/platform
-  ,CASE
-      WHEN urn LIKE 'ioos.station.wmo:%' THEN substr(urn, length('ioos.station.wmo:') + 1)
-      ELSE NULL
-   END as station_wmo_id
+  ,a.wmoId as station_wmo_id
   ,NULL as station_sponsor
   ,a.url as station_url
   ,a.rss as station_rss_url
