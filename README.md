@@ -33,6 +33,12 @@ having to edit or compile Java.
       ```
       java -jar sos-injector-db.jar 
       ```
+ * To do a trial run (test your queries against your database without injecting data into an SOS), set the "mock" VM argument:
+
+      ``` 
+      java -Dmock -jar sos-injector-db.jar myconfig.properties
+      ```
+
 
 ## Configuration/SQL files
 
