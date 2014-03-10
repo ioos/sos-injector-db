@@ -47,7 +47,7 @@ having to edit or compile Java.
 
 To run the injector, you need to set up a configuration file and set of query files.
 
-To view examples of these files, see the GCOOS test files.
+To view examples of these files, see the [GCOOS test files](src/test/resources/gcoos).
 
 The query files fall into four categories (*italic fields* = optionally null, data type text unless otherwise noted):
 
