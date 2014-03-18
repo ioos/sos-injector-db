@@ -4,7 +4,7 @@
 --start_date
 
 SELECT
-   Datetime(a.observationDate) as observation_time
+   strftime('%Y-%m-%dT%H:%M:%fZ', Datetime(a.observationDate)) as observation_time
   ,a.barometric as observation_value
   ,b.verticalPosition as observation_height_meters
 FROM airPressure a
