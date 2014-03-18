@@ -22,6 +22,7 @@ import com.axiomalaska.cf4j.CFStandardNameUtil;
 import com.axiomalaska.ioos.sos.GeomHelper;
 import com.axiomalaska.ioos.sos.IoosSosConstants;
 import com.axiomalaska.ioos.sos.IoosSosUtil;
+import com.axiomalaska.phenomena.IoosParameterUtil;
 import com.axiomalaska.phenomena.Phenomenon;
 import com.axiomalaska.phenomena.UnitResolver;
 import com.axiomalaska.sos.StationRetriever;
@@ -216,8 +217,9 @@ public class DatabaseStationRetriever implements StationRetriever {
                         phenomenon.setName(IoosSosUtil.convertUnderscoredNameToTitleCase(phenomenon.getTag()));
                         phenomenon.setUnit(UnitResolver.parseUnit(phenomenonUnit));
 
-                        if (CFStandardNameUtil.getCFStandardName(phenomenon.getTag()) == null) {
-                            LOGGER.warn(phenomenon.getTag() + " is not a valid CF standard name!");
+                        if (CFStandardNameUtil.getCFStandardName(phenomenon.getTag()) == null &&
+                                !IoosParameterUtil.getInstance().vocabularyContainsParameter(phenomenonUrn)) {
+                            LOGGER.warn("{} is not in the CF standard name or IOOS parameter vocabularies!", phenomenonUrn);
                         }
 
                         sensorPhenomena.add(phenomenon);
