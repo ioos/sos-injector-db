@@ -100,24 +100,33 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
                 //load all columns to local variables
                 DateTime observationTime = null;
                 Object dateObj = resultSet.getObject(DatabaseSosInjectorConstants.OBSERVATION_TIME);
-                try {                    
-                    observationTime = new DateTime(dateObj, DateTimeZone.UTC);
-                } catch (Exception e) {
-                    LOGGER.error("Error parsing date {}. Skipping.", dateObj);
-                    continue;           
+                if (dateObj instanceof String) {
+                    observationTime = DateTime.parse((String) dateObj);
+                } else {
+                    try {
+                        observationTime = new DateTime(dateObj, DateTimeZone.UTC);
+                    } catch (Exception e) {
+                        LOGGER.error("Error parsing date {}. Skipping.", dateObj);
+                        continue;           
+                    }
+                }
+
+                if (observationTime == null) {
+                    LOGGER.error("Couldn't parse a date from query result ({}). Skipping.", observationTime);
+                    continue;                    
                 }
 
                 if (!observationTime.isAfter(startDate)) {
-                    LOGGER.error("Retrieved a date before the start date! Observation date {} is not after start date {}. Skipping.",
+                    LOGGER.error("Retrieved a date before the start date! Observation date ({}) is not after start date ({}). Skipping.",
                             observationTime, startDate);
                     continue;
                 }
 
-                if (!observationTime.isAfter(now)) {
-                    LOGGER.error("Observation date {} is after now ({}). Skipping.", observationTime, now);
+                if (observationTime.isAfter(now)) {
+                    LOGGER.error("Observation date ({}) is after now ({}). Skipping.", observationTime, now);
                     continue;
                 }
-                
+
                 double observationValue = resultSet.getDouble(DatabaseSosInjectorConstants.OBSERVATION_VALUE);
                 double observationHeightMeters = resultSet.getDouble(DatabaseSosInjectorConstants.OBSERVATION_HEIGHT_METERS);
 
