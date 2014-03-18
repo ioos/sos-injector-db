@@ -1,11 +1,12 @@
 package com.axiomalaska.sos.injector.db;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.axiomalaska.sos.SosInjector;
 
 public class DatabaseSosInjector {
-    private static final Logger LOGGER = Logger.getLogger(DatabaseSosInjector.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseSosInjector.class);
     private static final String MOCK = "mock";
     
     public static void main(String[] args){

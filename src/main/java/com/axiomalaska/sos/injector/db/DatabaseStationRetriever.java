@@ -13,9 +13,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.n52.sos.ioos.asset.SensorAsset;
 import org.n52.sos.ioos.asset.StationAsset;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.axiomalaska.cf4j.CFStandardNameUtil;
 import com.axiomalaska.ioos.sos.GeomHelper;
@@ -36,7 +37,7 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 
 public class DatabaseStationRetriever implements StationRetriever {    
-    private static final Logger LOGGER = Logger.getLogger(DatabaseStationRetriever.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseStationRetriever.class);
     private static final String GET_STATIONS_QUERY = "get_stations.sql";
     private static final String GET_STATION_SENSORS_QUERY = "get_station_sensors.sql";
     private static final String GET_SENSOR_PHENOMENA_QUERY = "get_sensor_phenomena.sql";

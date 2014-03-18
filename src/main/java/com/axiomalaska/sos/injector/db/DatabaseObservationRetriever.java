@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -27,7 +28,7 @@ import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 
 public class DatabaseObservationRetriever implements ObservationRetriever {
-    private static final Logger LOGGER = Logger.getLogger(DatabaseObservationRetriever.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseObservationRetriever.class);
     private static final String GENERIC_GET_OBS_QUERY = "get_observations.sql";
     private static final String PHEN_SPECIFIC_GET_OBS_QUERY_FORMAT = "get_observations_%s.sql";
     
@@ -35,7 +36,8 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
     public List<ObservationCollection> getObservationCollection(
             SosSensor sensor, Phenomenon phenomenon, DateTime startDate) {
         LOGGER.info("Retrieving observations for " + sensor + ", phenomenon " + phenomenon +", start time " + startDate);
-
+        DateTime now = new DateTime(DateTimeZone.UTC);
+        
         if (sensor.getLocation() == null) {
             throw new RuntimeException("Sensor must not have a null location!");
         }        
@@ -101,9 +103,21 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
                 try {                    
                     observationTime = new DateTime(dateObj, DateTimeZone.UTC);
                 } catch (Exception e) {
-                    LOGGER.warn("Error parsing date " + dateObj + ", skipping");
-                    continue;                    
+                    LOGGER.error("Error parsing date {}. Skipping.", dateObj);
+                    continue;           
                 }
+
+                if (!observationTime.isAfter(startDate)) {
+                    LOGGER.error("Retrieved a date before the start date! Observation date {} is not after start date {}. Skipping.",
+                            observationTime, startDate);
+                    continue;
+                }
+
+                if (!observationTime.isAfter(now)) {
+                    LOGGER.error("Observation date {} is after now ({}). Skipping.", observationTime, now);
+                    continue;
+                }
+                
                 double observationValue = resultSet.getDouble(DatabaseSosInjectorConstants.OBSERVATION_VALUE);
                 double observationHeightMeters = resultSet.getDouble(DatabaseSosInjectorConstants.OBSERVATION_HEIGHT_METERS);
 

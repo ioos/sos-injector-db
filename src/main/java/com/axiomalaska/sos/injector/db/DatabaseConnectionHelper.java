@@ -3,14 +3,15 @@ package com.axiomalaska.sos.injector.db;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
 
 public class DatabaseConnectionHelper {
-    private static final Logger LOGGER = Logger.getLogger(DatabaseConnectionHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseConnectionHelper.class);
     private static BoneCP connectionPool;
     
     private static BoneCP getConnectionPool() throws ClassNotFoundException, SQLException {
