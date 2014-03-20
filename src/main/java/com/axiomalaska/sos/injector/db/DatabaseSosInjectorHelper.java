@@ -6,26 +6,30 @@ import com.google.common.base.Strings;
 
 public class DatabaseSosInjectorHelper {
     public static Double getDouble(Object obj) {
-        if (obj instanceof Double) {
+        if (obj == null) {
+            return null;
+        } else if (obj instanceof Double) {
             return (Double) obj;
+        } else if (obj instanceof Number) {
+            return ((Number) obj).doubleValue();
         } else if (obj instanceof String) {
             return Double.valueOf((String) obj);
         }
-        return null;
+        throw new IllegalArgumentException(obj.toString() + " cannot be converted to a double!");
     }
-    
+
     public static void requireString(String name, String value) {
         if (Strings.isNullOrEmpty(value)){
             throw new RuntimeException(name + " cannot be null or empty!");
         }
     }
-    
+
     public static void requireNonNull(String name, Object value){
         if (value == null) {
             throw new IllegalStateException(name + " must not be null!");
         }
     }
-    
+
     public static DocumentMember makeDocument(String name, String arcrole, String url,
             String format, String description) {
         DocumentMemberImp document = new DocumentMemberImp();
