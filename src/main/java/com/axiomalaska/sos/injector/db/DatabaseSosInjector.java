@@ -1,9 +1,12 @@
 package com.axiomalaska.sos.injector.db;
 
+import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.axiomalaska.sos.SosInjector;
+import com.google.common.base.Stopwatch;
 
 public class DatabaseSosInjector {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseSosInjector.class);
@@ -15,7 +18,8 @@ public class DatabaseSosInjector {
             DatabaseSosInjectorConfig.initialize(configFile);
         }
 
-        try {        
+        Stopwatch stopwatch = Stopwatch.createStarted();        
+        try {            
             SosInjector sosInjector = null;
             if (System.getProperty(MOCK) != null) {
                 //mock
@@ -37,9 +41,11 @@ public class DatabaseSosInjector {
             if (sosInjector == null) {
                 throw new NullPointerException("sosInjector is null");
             }
+
             sosInjector.update();
+            LOGGER.info("SOS injection finished in {} seconds", stopwatch.elapsed(TimeUnit.SECONDS));
         } catch (Exception e) {
-            LOGGER.error("Sos injection failed", e);
+            LOGGER.error("Sos injection failed after {} seconds", stopwatch.elapsed(TimeUnit.SECONDS), e);
         }
     }
 }
