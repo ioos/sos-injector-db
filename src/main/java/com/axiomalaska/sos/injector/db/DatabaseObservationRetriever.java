@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ import com.axiomalaska.sos.injector.db.data.DatabasePhenomenon;
 import com.axiomalaska.sos.injector.db.data.DatabaseSosSensor;
 import com.axiomalaska.sos.injector.db.data.DatabaseSosStation;
 import com.google.common.base.Charsets;
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 
@@ -69,8 +71,10 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
 
             String getObsQuery = Files.toString(getObsQueryFile, Charsets.UTF_8);
             connection = DatabaseConnectionHelper.getConnection();
-            statement = connection.prepareStatement(getObsQuery);
-            
+            statement = connection.prepareStatement(getObsQuery,
+                    ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+            statement.setFetchSize(1000);
+
             //get special objects with database ids
             if (!(sensor instanceof DatabaseSosSensor)){
                 throw new RuntimeException(sensor.getId() + " isn't a DatabaseSosSensor");
@@ -84,7 +88,7 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
             DatabaseSosSensor dbSensor = (DatabaseSosSensor) sensor;
             DatabaseSosStation dbStation = (DatabaseSosStation) sensor.getStation();
             DatabasePhenomenon dbPhenomenon = (DatabasePhenomenon) phenomenon;
-            
+
             //set the query parameters
             int paramCount = 0;
             statement.setString(++paramCount, dbStation.getDatabaseId());
@@ -94,21 +98,26 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
                 statement.setString(++paramCount, dbPhenomenon.getDatabaseId());
             }
             statement.setString(++paramCount, startDate.toString());
-            ResultSet resultSet = statement.executeQuery();
 
+            Stopwatch queryStopwatch = Stopwatch.createStarted();
+            ResultSet resultSet = statement.executeQuery();            
+            LOGGER.info("Observation query executed in {} ms", queryStopwatch.elapsed(TimeUnit.MILLISECONDS));
+            
+            Stopwatch processingStopwatch = Stopwatch.createStarted();
+            int obsCount = 0;
             while (resultSet.next()) {
                 //load all columns to local variables
                 DateTime observationTime = null;
                 Object dateObj = resultSet.getObject(DatabaseSosInjectorConstants.OBSERVATION_TIME);
-                if (dateObj instanceof String) {
-                    observationTime = DateTime.parse((String) dateObj);
-                } else {
-                    try {
+                try {
+                    if (dateObj instanceof String) {
+                        observationTime = DateTime.parse((String) dateObj);
+                    } else {
                         observationTime = new DateTime(dateObj, DateTimeZone.UTC);
-                    } catch (Exception e) {
-                        LOGGER.error("Error parsing date {}. Skipping.", dateObj);
-                        continue;           
                     }
+                } catch (Exception e) {
+                    LOGGER.error("Error parsing date {}. Skipping.", dateObj);
+                    continue;           
                 }
 
                 if (observationTime == null) {
@@ -141,7 +150,9 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
                             sensor.getLocation().getX(), observationHeightMeters));
                 }
                 obsCollection.addObservationValue(observationTime, observationValue);
+                obsCount++;
             }
+            LOGGER.info("Processed {} observations in {} ms", obsCount, processingStopwatch.elapsed(TimeUnit.MILLISECONDS));
         } catch (Exception e) {
             throw new RuntimeException("Error getting observations for sensor " + sensor + ", phenomenon " + phenomenon
                     + ", start date " + startDate, e);
