@@ -32,4 +32,8 @@ JOIN (
 ) c
  ON b.shortTypeName = c.sensorType
 WHERE a.platformId = ?
-AND a.sensorTypeId = ?;
+AND a.sensorTypeId = ?
+GROUP BY
+   b.rowid
+  ,c.urn
+  ,c.unit;
