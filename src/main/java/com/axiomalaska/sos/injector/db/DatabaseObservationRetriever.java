@@ -152,7 +152,9 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
                 obsCollection.addObservationValue(observationTime, observationValue);
                 obsCount++;
             }
-            LOGGER.info("Processed {} observations in {} ms", obsCount, processingStopwatch.elapsed(TimeUnit.MILLISECONDS));
+            if (obsCount > 0) {
+                LOGGER.info("Processed {} observation(s) in {} ms", obsCount, processingStopwatch.elapsed(TimeUnit.MILLISECONDS));
+            }
         } catch (Exception e) {
             throw new RuntimeException("Error getting observations for sensor " + sensor + ", phenomenon " + phenomenon
                     + ", start date " + startDate, e);
