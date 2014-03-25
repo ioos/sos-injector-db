@@ -145,7 +145,7 @@ public class DatabaseStationRetriever implements StationRetriever {
 
                 station.setDatabaseId(stationDatabaseId);
                 station.setSource(source);
-                station.setAsset(new StationAsset(stationAuthority, stationId));
+                station.setAsset(new StationAsset(cleanUpUrnComponent(stationAuthority), cleanUpUrnComponent(stationId)));
                 station.setShortName(stationShortName);
                 station.setLongName(stationLongName);
                 station.setLocation(GeomHelper.createLatLngPoint(stationLat, stationLng, stationHeightMeters));
@@ -192,7 +192,7 @@ public class DatabaseStationRetriever implements StationRetriever {
                     station.addSensor(sensor);
                     sensor.setDatabaseId(sensorDatabaseId);
                     sensor.setStation(station);
-                    sensor.setAsset(new SensorAsset(station.getAsset(), sensorShortName));
+                    sensor.setAsset(new SensorAsset(station.getAsset(), cleanUpUrnComponent(sensorShortName)));
                     sensor.setLocation(GeomHelper.createLatLngPoint(stationLat, stationLng, sensorHeightMeters));
                     sensor.setShortName(sensorShortName);
                     sensor.setLongName(sensorLongName);
@@ -250,5 +250,9 @@ public class DatabaseStationRetriever implements StationRetriever {
                 LOGGER.error("Error closing connection.");
             }
         }
+    }
+
+    private String cleanUpUrnComponent(String str) {
+        return str.toLowerCase().replaceAll("[^a-z0-9]", "_");
     }
 }
