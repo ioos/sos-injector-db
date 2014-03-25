@@ -3,7 +3,7 @@
 
 SELECT
    a.sensorTypeId as sensor_database_id -- for linking in subsequent queries  
-  ,b.shortTypeName as sensor_short_name
+  ,lower(b.shortTypeName) as sensor_short_name
   ,b.shortTypeName as sensor_long_name
   ,CASE
     WHEN COUNT(*) = 1 AND a.verticalPosition != 0 AND a.verticalPosition != 100 THEN a.verticalPosition

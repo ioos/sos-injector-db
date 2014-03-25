@@ -9,8 +9,8 @@ SELECT
   ,NULL as source_city
   ,NULL as source_state
   ,NULL as source_zip_code
-  ,coalesce(lower(b.shortname), 'unknown') as station_authority
-  ,a.name as station_id
+  ,coalesce(lower(replace(b.shortname, ' ', '_')), 'unknown') as station_authority
+  ,lower(replace(a.name, ' ', '_')) as station_id
   ,a.name as station_short_name
   ,a.description as station_long_name
   ,a.loc_lat as station_lat
