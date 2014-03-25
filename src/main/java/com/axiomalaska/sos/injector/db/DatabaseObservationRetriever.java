@@ -116,23 +116,23 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
                         observationTime = new DateTime(dateObj, DateTimeZone.UTC);
                     }
                 } catch (Exception e) {
-                    LOGGER.error("Error parsing date {}. Skipping.", dateObj);
+                    LOGGER.warn("Error parsing date {}. Skipping.", dateObj);
                     continue;           
                 }
 
                 if (observationTime == null) {
-                    LOGGER.error("Couldn't parse a date from query result ({}). Skipping.", observationTime);
+                    LOGGER.warn("Couldn't parse a date from query result ({}). Skipping.", observationTime);
                     continue;                    
                 }
 
                 if (!observationTime.isAfter(startDate)) {
-                    LOGGER.error("Retrieved a date before the start date! Observation date ({}) is not after start date ({}). Skipping.",
+                    LOGGER.warn("Retrieved a date before the start date! Observation date ({}) is not after start date ({}). Skipping.",
                             observationTime, startDate);
                     continue;
                 }
 
                 if (observationTime.isAfter(now)) {
-                    LOGGER.error("Observation date ({}) is after now ({}). Skipping.", observationTime, now);
+                    LOGGER.warn("Observation date ({}) is after now ({}). Skipping.", observationTime, now);
                     continue;
                 }
 
