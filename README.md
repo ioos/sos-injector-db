@@ -134,7 +134,7 @@ If your observations for all phenomena can be queried using a single query
   * station_database_id - from get_stations.sql
   * sensor_database_id - from get_station_sensors.sql
   * phenomenon_database_id - from get_sensor_phenomena.sql
-  * start_date - queried from target SOS
+  * start_date - queried from target SOS in ISO8061 string format, return all observations at times **greater** than this value
 
 #### [get_observations_{cf_standard_name}.sql](src/test/resources/gcoos/queries_named_params/get_observations_air_temperature.sql) (phenomenon specific queries)
 
@@ -146,7 +146,7 @@ get_observations_{cf_standard_name}.sql (e.g. get_observations_air_temperature.s
 
   * station_database_id - from get_stations.sql
   * sensor_database_id - from get_station_sensors.sql
-  * start_date - queried from target SOS
+  * start_date - queried from target SOS in ISO8061 string format, return all observations at times **greater** than this value
 
 **Expected result columns:**
 
