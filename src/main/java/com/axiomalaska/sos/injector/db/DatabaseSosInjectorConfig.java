@@ -1,6 +1,8 @@
 package com.axiomalaska.sos.injector.db;
 
 
+import java.io.File;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -9,6 +11,7 @@ import com.axiomalaska.sos.data.PublisherInfo;
 
 public class DatabaseSosInjectorConfig {
     private static final String CONFIG_FILE = "config.properties";
+
     private static DatabaseSosInjectorConfig instance;
 
     //configurable properties
@@ -27,7 +30,7 @@ public class DatabaseSosInjectorConfig {
     private static final String JDBC_PASSWORD = "jdbc.password";
     private String jdbcPassword;
 
-    private static final String QUERY_PATH = "query.path";    
+    public static final String QUERY_PATH = "query.path";    
     private static final String QUERY_PATH_DEFAULT = ".";
     private String queryPath;
     
@@ -75,7 +78,17 @@ public class DatabaseSosInjectorConfig {
         instance.jdbcUrl = getRequiredConfigString(config, JDBC_URL);
         instance.jdbcUsername = config.getString(JDBC_USERNAME);
         instance.jdbcPassword = config.getString(JDBC_PASSWORD);
-        instance.queryPath = config.getString(QUERY_PATH, QUERY_PATH_DEFAULT);
+ 
+        if (System.getProperty(QUERY_PATH) != null) {
+            instance.queryPath = System.getProperty(QUERY_PATH);
+        } else {
+            instance.queryPath = config.getString(QUERY_PATH, QUERY_PATH_DEFAULT);    
+        }
+        File queryPathFile = new File(instance.getQueryPath());
+        if (!queryPathFile.exists()) {
+            throw new RuntimeException(String.format("Query directory path '%s' doesn't exist", queryPathFile.getAbsolutePath()));
+        }
+        
         instance.publisherInfo = new PublisherInfo();
         instance.publisherInfo.setName(getRequiredConfigString(config, PUBLISHER_NAME));
         instance.publisherInfo.setCode(getRequiredConfigString(config, PUBLISHER_CODE));
@@ -112,6 +125,14 @@ public class DatabaseSosInjectorConfig {
 
     public String getQueryPath() {
         return queryPath;
+    }
+
+    /**
+     * Set queryPath. Normally we don't want setters here but there may be an environment variable override.
+     * @param queryPath
+     */
+    public void setQueryPath(String queryPath) {
+        this.queryPath = queryPath;
     }
     
     public PublisherInfo getPublisherInfo() {

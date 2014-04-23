@@ -42,6 +42,12 @@ having to edit or compile Java.
       java -Dmock -jar sos-injector-db.jar myconfig.properties
       ```
 
+ * To override the query directory specified in the configuration file (useful for temporary alterations), set the "query.path" VM argument:
+
+      ``` 
+      java -Dquery.path=some/path/to/your/queries -jar sos-injector-db.jar myconfig.properties
+      ```
+
 
 ## Configuration/SQL files
 
