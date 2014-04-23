@@ -48,6 +48,12 @@ having to edit or compile Java.
       java -Dquery.path=some/path/to/your/queries -jar sos-injector-db.jar myconfig.properties
       ```
 
+ * To override observation query start or end dates, set "startDate" and/or "endDate" VM arguments with ISO8601 timestamp strings (startDate defaults to latest station/sensor/phenomenon time in SOS, endDate defaults to current time):
+
+      ``` 
+      java -DstartTime=2014-04-23T05:00:00Z -DendTime=2014-04-23T08:00:00Z -jar sos-injector-db.jar myconfig.properties
+      ```
+
 
 ## Configuration/SQL files
 

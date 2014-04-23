@@ -33,12 +33,25 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseObservationRetriever.class);
     private static final String GENERIC_GET_OBS_QUERY = "get_observations.sql";
     private static final String PHEN_SPECIFIC_GET_OBS_QUERY_FORMAT = "get_observations_%s.sql";
+    public static final String END_DATE = "endDate";
     
     @Override
     public List<ObservationCollection> getObservationCollection(
             SosSensor sensor, Phenomenon phenomenon, DateTime startDate) {
         LOGGER.info("Retrieving observations for " + sensor + ", phenomenon " + phenomenon +", start time " + startDate);
-        DateTime now = new DateTime(DateTimeZone.UTC);
+
+        if (System.getProperty(DatabaseSosInjectorConstants.START_DATE) != null) {
+            //override startDate with system property
+            startDate = DateTime.parse(System.getProperty(DatabaseSosInjectorConstants.START_DATE));
+        }
+        
+        //set endDate default to now
+        DateTime endDate = new DateTime(DateTimeZone.UTC);
+        if (System.getProperty(END_DATE) != null) {
+            //override endDate with system property
+            String endDateString = System.getProperty(END_DATE);            
+            endDate = DateTime.parse(endDateString);
+        }
         
         if (sensor.getLocation() == null) {
             throw new RuntimeException("Sensor must not have a null location!");
@@ -143,8 +156,8 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
                     continue;
                 }
 
-                if (observationTime.isAfter(now)) {
-                    LOGGER.warn("Observation date ({}) is after now ({}). Skipping.", observationTime, now);
+                if (observationTime.isAfter(endDate)) {
+                    LOGGER.warn("Observation date ({}) is after endDate ({}). Skipping.", observationTime, endDate);
                     continue;
                 }
 
