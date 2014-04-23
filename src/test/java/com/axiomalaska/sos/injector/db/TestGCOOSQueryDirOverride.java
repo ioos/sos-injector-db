@@ -8,7 +8,7 @@ import org.junit.Test;
 public class TestGCOOSQueryDirOverride extends AbstractTestGCOOS {
     @BeforeClass
     public static void initConfig() {
-        System.setProperty(DatabaseSosInjectorConfig.QUERY_PATH, "src/test/resources/gcoos/queries_named_params");        
+        System.setProperty(DatabaseSosInjectorConstants.ENV_QUERY_PATH, "src/test/resources/gcoos/queries_named_params");        
         DatabaseSosInjectorConfig.initialize("gcoos/config.properties");
     }
 

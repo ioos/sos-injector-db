@@ -79,8 +79,8 @@ public class DatabaseSosInjectorConfig {
         instance.jdbcUsername = config.getString(JDBC_USERNAME);
         instance.jdbcPassword = config.getString(JDBC_PASSWORD);
  
-        if (System.getProperty(QUERY_PATH) != null) {
-            instance.queryPath = System.getProperty(QUERY_PATH);
+        if (System.getProperty(DatabaseSosInjectorConstants.ENV_QUERY_PATH) != null) {
+            instance.queryPath = System.getProperty(DatabaseSosInjectorConstants.ENV_QUERY_PATH);
         } else {
             instance.queryPath = config.getString(QUERY_PATH, QUERY_PATH_DEFAULT);    
         }

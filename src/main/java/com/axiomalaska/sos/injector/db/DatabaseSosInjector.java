@@ -10,7 +10,6 @@ import com.google.common.base.Stopwatch;
 
 public class DatabaseSosInjector {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseSosInjector.class);
-    private static final String MOCK = "mock";
     
     public static void main(String[] args){
         if (args.length > 0) {
@@ -21,7 +20,7 @@ public class DatabaseSosInjector {
         Stopwatch stopwatch = Stopwatch.createStarted();        
         try {            
             SosInjector sosInjector = null;
-            if (System.getProperty(MOCK) != null) {
+            if (System.getProperty(DatabaseSosInjectorConstants.ENV_MOCK) != null) {
                 //mock
                 sosInjector = SosInjector.mock("mock-database-sos-injector",
                         new DatabaseStationRetriever(),

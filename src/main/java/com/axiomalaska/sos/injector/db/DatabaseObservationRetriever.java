@@ -33,23 +33,22 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseObservationRetriever.class);
     private static final String GENERIC_GET_OBS_QUERY = "get_observations.sql";
     private static final String PHEN_SPECIFIC_GET_OBS_QUERY_FORMAT = "get_observations_%s.sql";
-    public static final String END_DATE = "endDate";
     
     @Override
     public List<ObservationCollection> getObservationCollection(
             SosSensor sensor, Phenomenon phenomenon, DateTime startDate) {
         LOGGER.info("Retrieving observations for " + sensor + ", phenomenon " + phenomenon +", start time " + startDate);
 
-        if (System.getProperty(DatabaseSosInjectorConstants.START_DATE) != null) {
+        if (System.getProperty(DatabaseSosInjectorConstants.ENV_START_DATE) != null) {
             //override startDate with system property
-            startDate = DateTime.parse(System.getProperty(DatabaseSosInjectorConstants.START_DATE));
+            startDate = DateTime.parse(System.getProperty(DatabaseSosInjectorConstants.ENV_START_DATE));
         }
         
         //set endDate default to now
         DateTime endDate = new DateTime(DateTimeZone.UTC);
-        if (System.getProperty(END_DATE) != null) {
+        if (System.getProperty(DatabaseSosInjectorConstants.ENV_END_DATE) != null) {
             //override endDate with system property
-            String endDateString = System.getProperty(END_DATE);            
+            String endDateString = System.getProperty(DatabaseSosInjectorConstants.ENV_END_DATE);            
             endDate = DateTime.parse(endDateString);
         }
         

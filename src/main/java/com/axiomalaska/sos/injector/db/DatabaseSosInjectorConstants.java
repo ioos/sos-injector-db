@@ -42,4 +42,10 @@ public class DatabaseSosInjectorConstants {
     public static final String OBSERVATION_HEIGHT_METERS = "observation_height_meters";
     
     public static final String START_DATE = "start_date";
+    
+    //environment variables
+    public static final String ENV_MOCK = "mock";    
+    public static final String ENV_QUERY_PATH = "query_path";
+    public static final String ENV_START_DATE = "start_date";
+    public static final String ENV_END_DATE = "end_date";
 }
