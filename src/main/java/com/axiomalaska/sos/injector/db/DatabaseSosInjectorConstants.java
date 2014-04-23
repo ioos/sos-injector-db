@@ -40,4 +40,6 @@ public class DatabaseSosInjectorConstants {
     public static final String OBSERVATION_TIME = "observation_time";
     public static final String OBSERVATION_VALUE = "observation_value";
     public static final String OBSERVATION_HEIGHT_METERS = "observation_height_meters";
+    
+    public static final String START_DATE = "start_date";
 }

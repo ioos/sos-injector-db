@@ -3,7 +3,6 @@ package com.axiomalaska.sos.injector.db;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,12 +10,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.axiomalaska.ioos.sos.GeomHelper;
+import com.axiomalaska.jdbc.NamedParameterPreparedStatement;
 import com.axiomalaska.phenomena.Phenomenon;
 import com.axiomalaska.sos.ObservationRetriever;
 import com.axiomalaska.sos.data.ObservationCollection;
@@ -47,7 +47,7 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
         Map<Double,ObservationCollection> observationCollections = Maps.newHashMap();
         
         Connection connection = null;
-        PreparedStatement statement = null;
+        NamedParameterPreparedStatement statement = null;
         try {
             //look for a phenomenon specific file first
             boolean phenomenonSpecific = true;
@@ -71,7 +71,7 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
 
             String getObsQuery = Files.toString(getObsQueryFile, Charsets.UTF_8);
             connection = DatabaseConnectionHelper.getConnection();
-            statement = connection.prepareStatement(getObsQuery,
+            statement = NamedParameterPreparedStatement.createNamedParameterPreparedStatement(connection, getObsQuery,
                     ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
             statement.setFetchSize(1000);
 
@@ -90,14 +90,26 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
             DatabasePhenomenon dbPhenomenon = (DatabasePhenomenon) phenomenon;
 
             //set the query parameters
-            int paramCount = 0;
-            statement.setString(++paramCount, dbStation.getDatabaseId());
-            statement.setString(++paramCount, dbSensor.getDatabaseId());
-            //only the generic get obs query should have the phenomenon database id as a parameter
-            if (!phenomenonSpecific) {
-                statement.setString(++paramCount, dbPhenomenon.getDatabaseId());
+            if (statement.hasNamedParameters()) {
+                //named parameters, set parameters using named parameters
+                statement.setString(DatabaseSosInjectorConstants.STATION_DATABASE_ID, dbStation.getDatabaseId());
+                statement.setString(DatabaseSosInjectorConstants.SENSOR_DATABASE_ID, dbSensor.getDatabaseId());
+                //only the generic get obs query should have the phenomenon database id as a parameter
+                if (!phenomenonSpecific) {
+                    statement.setString(DatabaseSosInjectorConstants.PHENOMENON_DATABASE_ID, dbSensor.getDatabaseId());
+                }
+                statement.setString(DatabaseSosInjectorConstants.START_DATE, startDate.toString());
+            } else {
+                //no named parameters, set parameters normally
+                int paramCount = 0;
+                statement.setString(++paramCount, dbStation.getDatabaseId());
+                statement.setString(++paramCount, dbSensor.getDatabaseId());
+                //only the generic get obs query should have the phenomenon database id as a parameter
+                if (!phenomenonSpecific) {
+                    statement.setString(++paramCount, dbPhenomenon.getDatabaseId());
+                }
+                statement.setString(++paramCount, startDate.toString());
             }
-            statement.setString(++paramCount, startDate.toString());
 
             Stopwatch queryStopwatch = Stopwatch.createStarted();
             ResultSet resultSet = statement.executeQuery();            

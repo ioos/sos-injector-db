@@ -51,7 +51,10 @@ To view examples of these files, see the [GCOOS test files](src/test/resources/g
 
 The query files fall into four categories (*italic fields* = optionally null, data type text unless otherwise noted):
 
-### [get_stations.sql](src/test/resources/gcoos/queries/get_stations.sql)
+NOTE: The query parameters can either be normal JDBC parameters (using ?) in the order that they are specified, or
+named parameters (using :the_parameter). Named parameters can be reused multiple times in the query. 
+
+### [get_stations.sql](src/test/resources/gcoos/queries_named_params/get_stations.sql)
 
 Queries all stations and associated metadata (provider, URLs, etc).
 
@@ -85,7 +88,7 @@ Queries all stations and associated metadata (provider, URLs, etc).
   * *station_image_url*
   * *station_image_mime_type*  
 
-### [get_station_sensors.sql](src/test/resources/gcoos/queries/get_station_sensors.sql)
+### [get_station_sensors.sql](src/test/resources/gcoos/queries_named_params/get_station_sensors.sql)
 
 Queries all sensors for a station.
   
@@ -100,7 +103,7 @@ Queries all sensors for a station.
   * sensor_long_name
   * *sensor_height_meters* (numeric)
   
-### [get_sensor_phenomena.sql](src/test/resources/gcoos/queries/get_sensor_phenomena.sql)
+### [get_sensor_phenomena.sql](src/test/resources/gcoos/queries_named_params/get_sensor_phenomena.sql)
 
 Queries all phenomena for a sensor.
   
@@ -133,7 +136,7 @@ If your observations for all phenomena can be queried using a single query
   * phenomenon_database_id - from get_sensor_phenomena.sql
   * start_date - queried from target SOS
 
-#### [get_observations_{cf_standard_name}.sql](src/test/resources/gcoos/queries/get_observations_air_temperature.sql) (phenomenon specific queries)
+#### [get_observations_{cf_standard_name}.sql](src/test/resources/gcoos/queries_named_params/get_observations_air_temperature.sql) (phenomenon specific queries)
 
 Alternatively, if you need to write a separate query for each phenomenon (usually if you store observations for each
 phenomenon in a separate table), you can create a query for each phenomenon using the filename format

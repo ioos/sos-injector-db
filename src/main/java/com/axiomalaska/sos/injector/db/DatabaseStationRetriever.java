@@ -7,7 +7,6 @@ import static com.axiomalaska.sos.injector.db.DatabaseSosInjectorHelper.requireS
 
 import java.io.File;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,6 +21,7 @@ import com.axiomalaska.cf4j.CFStandardNameUtil;
 import com.axiomalaska.ioos.sos.GeomHelper;
 import com.axiomalaska.ioos.sos.IoosSosConstants;
 import com.axiomalaska.ioos.sos.IoosSosUtil;
+import com.axiomalaska.jdbc.NamedParameterPreparedStatement;
 import com.axiomalaska.phenomena.IoosParameterUtil;
 import com.axiomalaska.phenomena.Phenomenon;
 import com.axiomalaska.phenomena.UnitResolver;
@@ -54,8 +54,8 @@ public class DatabaseStationRetriever implements StationRetriever {
     public List<SosStation> getStations() throws StationCreationException {
         Connection connection = null;
         Statement stationsStatement = null;
-        PreparedStatement stationSensorsStatement = null;
-        PreparedStatement sensorPhenomenaStatement = null;
+        NamedParameterPreparedStatement stationSensorsStatement = null;
+        NamedParameterPreparedStatement sensorPhenomenaStatement = null;
 
         try {
             List<SosStation> stations = Lists.newArrayList();
@@ -69,10 +69,10 @@ public class DatabaseStationRetriever implements StationRetriever {
 
             //get the connection and statements
             connection = DatabaseConnectionHelper.getConnection();
-            stationsStatement = addStatement(connection.createStatement());            
-            stationSensorsStatement = connection.prepareStatement(getSensorsQuery);
+            stationsStatement = addStatement(connection.createStatement());
+            stationSensorsStatement = NamedParameterPreparedStatement.createNamedParameterPreparedStatement(connection, getSensorsQuery);
             addStatement(stationSensorsStatement);            
-            sensorPhenomenaStatement = connection.prepareStatement(getSensorPhenomena);
+            sensorPhenomenaStatement = NamedParameterPreparedStatement.createNamedParameterPreparedStatement(connection, getSensorPhenomena);
             addStatement(sensorPhenomenaStatement);
 
             //execute the stations query
@@ -179,7 +179,13 @@ public class DatabaseStationRetriever implements StationRetriever {
 
                 //sensors
                 stationSensorsStatement.clearParameters();
-                stationSensorsStatement.setString(1, station.getDatabaseId());
+                if (stationSensorsStatement.hasNamedParameters()) {
+                    //named parameters, set parameters using named parameters
+                    stationSensorsStatement.setString(DatabaseSosInjectorConstants.STATION_DATABASE_ID, station.getDatabaseId());                    
+                } else {
+                    //no named parameters, set parameters normally
+                    stationSensorsStatement.setString(1, station.getDatabaseId());
+                }                
                 ResultSet stationSensorsResultSet = stationSensorsStatement.executeQuery();
                 while (stationSensorsResultSet.next()) {
                     //load all columns to local variables
@@ -201,8 +207,15 @@ public class DatabaseStationRetriever implements StationRetriever {
                     List<Phenomenon> sensorPhenomena = Lists.newArrayList();
 
                     sensorPhenomenaStatement.clearParameters();
-                    sensorPhenomenaStatement.setString(1, station.getDatabaseId());
-                    sensorPhenomenaStatement.setString(2, sensor.getDatabaseId());
+                    if (sensorPhenomenaStatement.hasNamedParameters()) {
+                        //named parameters, set parameters using named parameters
+                        sensorPhenomenaStatement.setString(DatabaseSosInjectorConstants.STATION_DATABASE_ID, station.getDatabaseId());
+                        sensorPhenomenaStatement.setString(DatabaseSosInjectorConstants.SENSOR_DATABASE_ID, sensor.getDatabaseId());                        
+                    } else {
+                        //no named parameters, set parameters normally
+                        sensorPhenomenaStatement.setString(1, station.getDatabaseId());
+                        sensorPhenomenaStatement.setString(2, sensor.getDatabaseId());                        
+                    }
                     ResultSet sensorPhenomenaResultSet = sensorPhenomenaStatement.executeQuery();
                     while (sensorPhenomenaResultSet.next()) {
                         //load all columns to local variables

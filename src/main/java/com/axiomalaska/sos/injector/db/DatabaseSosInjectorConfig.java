@@ -48,6 +48,12 @@ public class DatabaseSosInjectorConfig {
         initializeFromConfigFile(configFilePath);
     }
 
+    public static void cleanUp() {
+        if (instance != null) {
+            instance = null;
+        }
+    }
+
     public static DatabaseSosInjectorConfig instance() {
         if (instance == null) {
             initializeFromConfigFile(CONFIG_FILE);
