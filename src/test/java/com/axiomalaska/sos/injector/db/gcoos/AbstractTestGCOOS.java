@@ -1,4 +1,4 @@
-package com.axiomalaska.sos.injector.db;
+package com.axiomalaska.sos.injector.db.gcoos;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -28,6 +28,9 @@ import com.axiomalaska.sos.exception.ObservationRetrievalException;
 import com.axiomalaska.sos.exception.SosCommunicationException;
 import com.axiomalaska.sos.exception.StationCreationException;
 import com.axiomalaska.sos.exception.UnsupportedSosAssetTypeException;
+import com.axiomalaska.sos.injector.db.DatabaseObservationRetriever;
+import com.axiomalaska.sos.injector.db.DatabaseSosInjectorConfig;
+import com.axiomalaska.sos.injector.db.DatabaseStationRetriever;
 import com.axiomalaska.sos.injector.db.data.DatabasePhenomenon;
 import com.axiomalaska.sos.injector.db.data.DatabaseSosSensor;
 import com.axiomalaska.sos.injector.db.data.DatabaseSosStation;
@@ -41,7 +44,6 @@ public abstract class AbstractTestGCOOS {
     @Before
     public void setUp() {
         //only run tests if the gcoos.sqlite database exists
-        //TODO add reduced version of gcoos.sqlite
         Assume.assumeTrue(new File("src/test/resources/gcoos/gcoos.sqlite").exists());
     }
     

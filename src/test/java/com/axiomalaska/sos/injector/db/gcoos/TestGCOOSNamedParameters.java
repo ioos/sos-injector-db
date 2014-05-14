@@ -1,6 +1,8 @@
-package com.axiomalaska.sos.injector.db;
+package com.axiomalaska.sos.injector.db.gcoos;
 
 import org.junit.BeforeClass;
+
+import com.axiomalaska.sos.injector.db.DatabaseSosInjectorConfig;
 
 public class TestGCOOSNamedParameters extends AbstractTestGCOOS {
     @BeforeClass

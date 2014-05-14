@@ -1,9 +1,12 @@
-package com.axiomalaska.sos.injector.db;
+package com.axiomalaska.sos.injector.db.gcoos;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.axiomalaska.sos.injector.db.DatabaseSosInjectorConfig;
+import com.axiomalaska.sos.injector.db.DatabaseSosInjectorConstants;
 
 public class TestGCOOSQueryDirOverride extends AbstractTestGCOOS {
     @BeforeClass

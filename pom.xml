@@ -132,8 +132,13 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>net.sourceforge.csvjdbc</groupId>
+      <artifactId>csvjdbc</artifactId>
+      <version>1.0.19</version>
+    </dependency>
   </dependencies>
-  
+
   <repositories>
     <repository>
       <id>axiom-public</id>
@@ -142,5 +147,9 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <id>SourceForge-csvjdbc</id>
+      <url>http://csvjdbc.sourceforge.net/maven2</url>
+    </repository>    
   </repositories>  
 </project>
