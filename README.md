@@ -74,7 +74,7 @@ Queries all stations and associated metadata (provider, URLs, etc).
   
 **Expected result columns:**
   
-  * station_database_id - database key (for linking in subsequent queries) 
+  * station_database_id - unique database key (for linking in subsequent queries) 
   * source_name - station operator name
   * source_country
   * source_email
@@ -110,7 +110,7 @@ Queries all sensors for a station.
    
 **Expected result columns:**
   
-  * sensor_database_id - database key (for linking in subsequent queries)  
+  * sensor_database_id - unique database key (for linking in subsequent queries)  
   * sensor_short_name
   * sensor_long_name
   * *sensor_height_meters* (numeric)
@@ -126,7 +126,7 @@ Queries all phenomena for a sensor.
   
 **Expected result columns:**
   
-  * phenomenon_database_id - database key (for linking in subsequent queries)
+  * phenomenon_database_id - unique database key (for linking in subsequent queries)
   * phenomenon_urn - full CF standard name mmisw urn (e.g. http://mmisw.org/ont/cf/parameter/air_temperature, see [http://mmisw.org/ont/cf/parameter])
   * phenomenon_unit - UDUNITS compatible units string (e.g. degC)
 
