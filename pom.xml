@@ -84,12 +84,12 @@
     <dependency>
       <groupId>com.axiomalaska</groupId>
       <artifactId>sos-injector</artifactId>
-      <version>1.7.0-SNAPSHOT</version>
+      <version>1.7.0</version>
     </dependency>
     <dependency>
       <groupId>com.axiomalaska</groupId>
       <artifactId>jdbc-named-parameters</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.0</version>
     </dependency>    
     <dependency>
       <groupId>log4j</groupId>
@@ -151,5 +151,31 @@
       <id>SourceForge-csvjdbc</id>
       <url>http://csvjdbc.sourceforge.net/maven2</url>
     </repository>    
-  </repositories>  
+  </repositories>
+
+  <distributionManagement>
+    <repository>
+      <id>axiom_public_releases</id>
+      <name>Axiom Releases</name>
+      <uniqueVersion>false</uniqueVersion>
+      <url>
+        http://nexus.axiomalaska.com/nexus/content/repositories/public-releases
+      </url>
+    </repository>
+    <snapshotRepository>
+      <id>axiom_public_snapshots</id>
+      <name>Axiom Snapshots</name>
+      <uniqueVersion>false</uniqueVersion>
+      <url>
+        http://nexus.axiomalaska.com/nexus/content/repositories/public-snapshots
+      </url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <scm>
+    <connection>scm:git:https://github.com/ioos/sos-injector-db.git</connection>
+    <url>scm:git:https://github.com/ioos/sos-injector-db.git</url>
+    <developerConnection>scm:git:https://github.com/ioos/sos-injector-db.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
 </project>
