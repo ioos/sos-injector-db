@@ -4,9 +4,9 @@
 
 <!-- Note: view the [README on GitHub](https://github.com/ioos/sos-injector-db) for a better reading experience! -->
 
-This project uses the [sos-injector](https://github.com/axiomalaska/sos-injector) Java library
+This project uses the [sos-injector](https://github.com/ioos/sos-injector) Java library
 to read station information and observation values from an arbitrary database and inject
-them into an IOOS 52 North SOS.
+them into an [i52n-sos server](https://github.com/ioos/i52n-sos).
 
 All deployment specific information (SOS URL, provider information, source database connection url,
 queries to retrieve data from source database) is external to the compiled jar, so users should be able
@@ -15,7 +15,7 @@ having to edit or compile Java.
 
 ## Running the application
 
- * Download and unzip the [sos-injector-db distribution](https://github.com/ioos/sos-injector-db/releases)
+ * Download and unzip the [sos-injector-db distribution](https://github.com/ioos/sos-injector-db/releases/latest)
    (or clone the source code and use Maven to compile, mvn clean install)
  
  * Write configuration and SQL query files (see **Configuration/SQL files** section below)
