@@ -1,15 +1,18 @@
 package com.axiomalaska.sos.injector.db;
 
-
 import java.io.File;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.axiomalaska.sos.data.PublisherInfo;
 
 public class DatabaseSosInjectorConfig {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseSosInjectorConfig.class);
+
     private static final String CONFIG_FILE = "config.properties";
 
     private static DatabaseSosInjectorConfig instance;
@@ -65,6 +68,7 @@ public class DatabaseSosInjectorConfig {
     }
 
     private static void initializeFromConfigFile(String configFilePath) {
+        LOGGER.debug("Initializing sos-injector-db from config file '" + configFilePath + "'");
         instance = new DatabaseSosInjectorConfig();
         Configuration config;
         try {
@@ -80,7 +84,10 @@ public class DatabaseSosInjectorConfig {
         instance.jdbcPassword = config.getString(JDBC_PASSWORD);
  
         if (System.getProperty(DatabaseSosInjectorConstants.ENV_QUERY_PATH) != null) {
-            instance.queryPath = System.getProperty(DatabaseSosInjectorConstants.ENV_QUERY_PATH);
+            String queryPath = System.getProperty(DatabaseSosInjectorConstants.ENV_QUERY_PATH);
+            LOGGER.debug("Setting query path based on " + DatabaseSosInjectorConstants.ENV_QUERY_PATH
+                    + " environment variable to " + queryPath);
+            instance.queryPath = queryPath;
         } else {
             instance.queryPath = config.getString(QUERY_PATH, QUERY_PATH_DEFAULT);    
         }

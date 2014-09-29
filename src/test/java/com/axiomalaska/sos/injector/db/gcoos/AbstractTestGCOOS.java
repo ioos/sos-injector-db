@@ -14,6 +14,8 @@ import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.axiomalaska.ioos.sos.GeomHelper;
 import com.axiomalaska.ioos.sos.exception.UnsupportedGeometryTypeException;
@@ -36,8 +38,11 @@ import com.axiomalaska.sos.injector.db.data.DatabaseSosSensor;
 import com.axiomalaska.sos.injector.db.data.DatabaseSosStation;
 
 public abstract class AbstractTestGCOOS {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractTestGCOOS.class);
+
     @AfterClass
     public static void cleanUp() {
+        LOGGER.debug("Cleaning sos-injector-db test config");
         DatabaseSosInjectorConfig.cleanUp();
     }
 
