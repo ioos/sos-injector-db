@@ -134,19 +134,25 @@ public class DatabaseStationRetriever implements StationRetriever {
         } catch (Exception e) {
             throw new DatabaseSosInjectorStationCreationException("Error creating stations statement", e);
         }
+
         try {
             stationSensorsStatement = NamedParameterPreparedStatement.createNamedParameterPreparedStatement(getConnection(), getSensorsQuery);
         } catch (Exception e) {
             throw new DatabaseSosInjectorStationCreationException("Error creating stations sensors statement", e);
         }
-        addStatement(stationSensorsStatement);            
+        addStatement(stationSensorsStatement);
+        LOGGER.debug("Found " + stationSensorsStatement.getParameterMetaData().getParameterCount() +
+                " parameter(s) in stationSensorsStatement");        
+        
         try {
             sensorPhenomenaStatement = NamedParameterPreparedStatement.createNamedParameterPreparedStatement(getConnection(), getSensorPhenomena);
         } catch (Exception e) {
             throw new DatabaseSosInjectorStationCreationException("Error creating sensor phenomena statement", e);
         }
         addStatement(sensorPhenomenaStatement);
-
+        LOGGER.debug("Found " + sensorPhenomenaStatement.getParameterMetaData().getParameterCount() +
+                " parameter(s) in sensorPhenomenaStatement");
+        
         //execute the stations query
         ResultSet stationsResultSet;
         try {
