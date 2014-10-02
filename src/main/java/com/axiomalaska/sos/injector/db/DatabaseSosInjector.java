@@ -2,10 +2,12 @@ package com.axiomalaska.sos.injector.db;
 
 import java.util.concurrent.TimeUnit;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.axiomalaska.sos.SosInjector;
+import com.axiomalaska.sos.SosInjectorConstants;
 import com.google.common.base.Stopwatch;
 
 public class DatabaseSosInjector {
@@ -15,17 +17,20 @@ public class DatabaseSosInjector {
         if (args.length > 0) {
             String configFile = args[0];
             DatabaseSosInjectorConfig.initialize(configFile);
-        }
-
+        }        
+        
         Stopwatch stopwatch = Stopwatch.createStarted();        
         try {            
             SosInjector sosInjector = null;
             if (System.getProperty(DatabaseSosInjectorConstants.ENV_MOCK) != null) {
                 //mock
+                DateTime startDate = DatabaseSosInjectorConfig.instance().getOverrideStartDate() != null ?
+                        DatabaseSosInjectorConfig.instance().getOverrideStartDate() :
+                            SosInjectorConstants.DEFAULT_START_DATE;
                 sosInjector = SosInjector.mock("mock-database-sos-injector",
                         new DatabaseStationRetriever(),
                         new DatabaseObservationRetriever(),
-                        true);
+                        true, startDate);
                 LOGGER.info("Mock SosInjector initialized");
             } else {
                 sosInjector = new SosInjector("database-sos-injector",

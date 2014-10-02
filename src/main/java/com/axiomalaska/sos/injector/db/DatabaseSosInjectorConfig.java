@@ -5,6 +5,7 @@ import java.io.File;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +44,9 @@ public class DatabaseSosInjectorConfig {
     private static final String PUBLISHER_EMAIL = "publisher.email";
     private static final String PUBLISHER_WEB_ADDRESS = "publisher.webAddress";
     private PublisherInfo publisherInfo;
+
+    private DateTime overrideStartDate;
+    private DateTime overrideEndDate;
     
     //private constructor
     private DatabaseSosInjectorConfig(){}
@@ -102,6 +106,13 @@ public class DatabaseSosInjectorConfig {
         instance.publisherInfo.setCountry(getRequiredConfigString(config, PUBLISHER_COUNTRY));
         instance.publisherInfo.setEmail(getRequiredConfigString(config, PUBLISHER_EMAIL));
         instance.publisherInfo.setWebAddress(getRequiredConfigString(config, PUBLISHER_WEB_ADDRESS));
+
+        if (System.getProperty(DatabaseSosInjectorConstants.ENV_START_DATE) != null) {
+            instance.overrideStartDate = DateTime.parse(System.getProperty(DatabaseSosInjectorConstants.ENV_START_DATE));
+        }
+        if (System.getProperty(DatabaseSosInjectorConstants.ENV_END_DATE) != null) {
+            instance.overrideEndDate = DateTime.parse(System.getProperty(DatabaseSosInjectorConstants.ENV_END_DATE));
+        }        
     }
 
     private static String getRequiredConfigString(Configuration config, String propertyName) {
@@ -133,16 +144,16 @@ public class DatabaseSosInjectorConfig {
     public String getQueryPath() {
         return queryPath;
     }
-
-    /**
-     * Set queryPath. Normally we don't want setters here but there may be an environment variable override.
-     * @param queryPath
-     */
-    public void setQueryPath(String queryPath) {
-        this.queryPath = queryPath;
-    }
     
     public PublisherInfo getPublisherInfo() {
         return publisherInfo;
+    }
+
+    public DateTime getOverrideStartDate() {
+        return overrideStartDate;
+    }
+
+    public DateTime getOverrideEndDate() {
+        return overrideEndDate;
     }
 }

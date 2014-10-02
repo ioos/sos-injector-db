@@ -39,17 +39,18 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
             SosSensor sensor, Phenomenon phenomenon, DateTime startDate) {
         LOGGER.info("Retrieving observations for " + sensor + ", phenomenon " + phenomenon +", start time " + startDate);
 
-        if (System.getProperty(DatabaseSosInjectorConstants.ENV_START_DATE) != null) {
-            //override startDate with system property
-            startDate = DateTime.parse(System.getProperty(DatabaseSosInjectorConstants.ENV_START_DATE));
+        if (DatabaseSosInjectorConfig.instance().getOverrideStartDate() != null &&
+                startDate.isBefore(DatabaseSosInjectorConfig.instance().getOverrideStartDate())) {
+            //override startDate
+            startDate = DatabaseSosInjectorConfig.instance().getOverrideStartDate();
         }
         
         //set endDate default to now
         DateTime endDate = new DateTime(DateTimeZone.UTC);
-        if (System.getProperty(DatabaseSosInjectorConstants.ENV_END_DATE) != null) {
-            //override endDate with system property
-            String endDateString = System.getProperty(DatabaseSosInjectorConstants.ENV_END_DATE);            
-            endDate = DateTime.parse(endDateString);
+        if (DatabaseSosInjectorConfig.instance().getOverrideEndDate() != null &&
+                endDate.isAfter(DatabaseSosInjectorConfig.instance().getOverrideEndDate())) {
+            //override endDate
+            endDate = DatabaseSosInjectorConfig.instance().getOverrideEndDate();
         }
         
         if (sensor.getLocation() == null) {
@@ -108,7 +109,7 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
                 statement.setString(DatabaseSosInjectorConstants.SENSOR_DATABASE_ID, dbSensor.getDatabaseId());
                 //only the generic get obs query should have the phenomenon database id as a parameter
                 if (!phenomenonSpecific) {
-                    statement.setString(DatabaseSosInjectorConstants.PHENOMENON_DATABASE_ID, dbSensor.getDatabaseId());
+                    statement.setString(DatabaseSosInjectorConstants.PHENOMENON_DATABASE_ID, dbPhenomenon.getDatabaseId());
                 }
                 statement.setString(DatabaseSosInjectorConstants.START_DATE, startDate.toString());
             } else {
