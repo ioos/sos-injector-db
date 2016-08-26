@@ -1,8 +1,6 @@
-# sos-injector-db
-
 [![Build Status](https://api.travis-ci.org/ioos/sos-injector-db.png)](https://travis-ci.org/ioos/sos-injector-db)
 
-<!-- Note: view the [README on GitHub](https://github.com/ioos/sos-injector-db) for a better reading experience! -->
+# sos-injector-db
 
 This project uses the [sos-injector](https://github.com/ioos/sos-injector) Java library
 to read station information and observation values from an arbitrary database and inject
