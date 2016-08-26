@@ -141,8 +141,10 @@ public class DatabaseStationRetriever implements StationRetriever {
             throw new DatabaseSosInjectorStationCreationException("Error creating stations sensors statement", e);
         }
         addStatement(stationSensorsStatement);
-        LOGGER.debug("Found " + stationSensorsStatement.getParameterMetaData().getParameterCount() +
-                " parameter(s) in stationSensorsStatement");        
+        if (stationSensorsStatement.getParameterMetaData() != null) {
+            LOGGER.debug("Found " + stationSensorsStatement.getParameterMetaData().getParameterCount() +
+                    " parameter(s) in stationSensorsStatement");
+        }
         
         try {
             sensorPhenomenaStatement = NamedParameterPreparedStatement.createNamedParameterPreparedStatement(getConnection(), getSensorPhenomena);
@@ -150,9 +152,11 @@ public class DatabaseStationRetriever implements StationRetriever {
             throw new DatabaseSosInjectorStationCreationException("Error creating sensor phenomena statement", e);
         }
         addStatement(sensorPhenomenaStatement);
-        LOGGER.debug("Found " + sensorPhenomenaStatement.getParameterMetaData().getParameterCount() +
-                " parameter(s) in sensorPhenomenaStatement");
-        
+        if (sensorPhenomenaStatement.getParameterMetaData() != null) {
+            LOGGER.debug("Found " + sensorPhenomenaStatement.getParameterMetaData().getParameterCount() +
+                    " parameter(s) in sensorPhenomenaStatement");
+        }
+
         //execute the stations query
         ResultSet stationsResultSet;
         try {

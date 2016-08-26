@@ -1,13 +1,18 @@
 FROM maven:3
 MAINTAINER Shane St Clair<shane@axds.co>
 
+RUN mkdir -p /tmp/mvn_repo
+
 WORKDIR /usr/local/src
 
 ADD pom.xml /usr/local/src
-RUN mvn clean verify --fail-never
+
+#Download all currently resolvable dependencies (override default local repo, defined as volume upstream)
+RUN mvn -Dmaven.repo.local=/tmp/mvn_repo dependency:go-offline
 
 ADD . /usr/local/src
-RUN mvn clean package \
+RUN mvn -Dmaven.repo.local=/tmp/mvn_repo clean package \
+    && rm -rf /tmp/mvn_repo \
     && mkdir -p /srv/sos-injector-db \
     && mv target/sos-injector-db-*-shaded.jar /srv/sos-injector-db/sos-injector-db.jar \
     && rm -rf /usr/local/src/*
@@ -19,4 +24,4 @@ RUN useradd --system --home-dir=/srv/sos-injector-db sensor \
 #Run as sensor user
 USER sensor
 
-CMD java -jar /srv/sos-injector-db/sos-injector-db.jar
+ENTRYPOINT ["java", "-jar", "/srv/sos-injector-db/sos-injector-db.jar"]
