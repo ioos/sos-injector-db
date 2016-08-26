@@ -51,7 +51,7 @@ public class TestH2 {
     public static void initConfig() throws ClassNotFoundException, SQLException, IOException {
         //init h2 database
         Class.forName("org.h2.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:h2:mem:sos");
+        Connection conn = DriverManager.getConnection("jdbc:h2:mem:sos;DB_CLOSE_DELAY=-1");
         Statement statement = conn.createStatement();
         statement.execute(Files.toString(new File("src/test/resources/h2/init.sql"), Charsets.UTF_8));
 
