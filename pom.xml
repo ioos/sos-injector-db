@@ -3,7 +3,7 @@
 
   <groupId>com.axiomalaska</groupId>
   <artifactId>sos-injector-db</artifactId>
-  <version>1.0.8-SNAPSHOT</version>
+  <version>1.0.8</version>
   <packaging>jar</packaging>
 
   <name>sos-injector-db</name>
@@ -179,6 +179,6 @@
     <connection>scm:git:git@github.com:ioos/sos-injector-db.git</connection>
     <url>scm:git:git@github.com:ioos/sos-injector-db.git</url>
     <developerConnection>scm:git:git@github.com:ioos/sos-injector-db.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>1.0.8</tag>
   </scm>
 </project>
