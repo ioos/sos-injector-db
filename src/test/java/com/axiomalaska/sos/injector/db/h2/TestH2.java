@@ -33,6 +33,7 @@ import com.axiomalaska.sos.data.SosStation;
 import com.axiomalaska.sos.exception.InvalidObservationCollectionException;
 import com.axiomalaska.sos.exception.ObservationRetrievalException;
 import com.axiomalaska.sos.exception.SosCommunicationException;
+import com.axiomalaska.sos.exception.SosUpdateException;
 import com.axiomalaska.sos.exception.StationCreationException;
 import com.axiomalaska.sos.exception.UnsupportedSosAssetTypeException;
 import com.axiomalaska.sos.injector.db.DatabaseObservationRetriever;
@@ -117,8 +118,7 @@ public class TestH2 {
     }
 
     @Test
-    public void testSosInjector() throws InvalidObservationCollectionException, ObservationRetrievalException,
-        UnsupportedSosAssetTypeException, StationCreationException, SosCommunicationException, UnsupportedGeometryTypeException {
+    public void testSosInjector() throws SosUpdateException {
         //run the station and observation retrievers through a mock SosInjector
         SosInjector.mock(
              "mock-sos-injector"

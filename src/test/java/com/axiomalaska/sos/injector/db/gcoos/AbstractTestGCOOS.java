@@ -28,6 +28,7 @@ import com.axiomalaska.sos.data.SosStation;
 import com.axiomalaska.sos.exception.InvalidObservationCollectionException;
 import com.axiomalaska.sos.exception.ObservationRetrievalException;
 import com.axiomalaska.sos.exception.SosCommunicationException;
+import com.axiomalaska.sos.exception.SosUpdateException;
 import com.axiomalaska.sos.exception.StationCreationException;
 import com.axiomalaska.sos.exception.UnsupportedSosAssetTypeException;
 import com.axiomalaska.sos.injector.db.DatabaseObservationRetriever;
@@ -98,9 +99,8 @@ public abstract class AbstractTestGCOOS {
     }
 
     @Test
-    public void testSosInjector() throws InvalidObservationCollectionException, ObservationRetrievalException,
+    public void testSosInjector() throws SosUpdateException {
         //run the station and observation retrievers through a mock SosInjector
-        UnsupportedSosAssetTypeException, StationCreationException, SosCommunicationException, UnsupportedGeometryTypeException {
         SosInjector.mock(
              "mock-sos-injector"
             ,new DatabaseStationRetriever()

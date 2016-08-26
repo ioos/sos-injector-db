@@ -33,5 +33,10 @@
         <exclude>**/*.sqlite</exclude>
       </excludes>
     </fileSet>  
+    <!-- example h2 config/queries -->
+    <fileSet>
+      <directory>src/test/resources/h2</directory>
+      <outputDirectory>/examples/h2</outputDirectory>
+    </fileSet>  
   </fileSets>
 </assembly>
