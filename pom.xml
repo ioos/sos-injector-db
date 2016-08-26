@@ -176,9 +176,9 @@
   </distributionManagement>
 
   <scm>
-    <connection>scm:git:https://github.com/ioos/sos-injector-db.git</connection>
-    <url>scm:git:https://github.com/ioos/sos-injector-db.git</url>
-    <developerConnection>scm:git:https://github.com/ioos/sos-injector-db.git</developerConnection>
+    <connection>scm:git:git@github.com:ioos/sos-injector-db.git</connection>
+    <url>scm:git:git@github.com:ioos/sos-injector-db.git</url>
+    <developerConnection>scm:git:git@github.com:ioos/sos-injector-db.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 </project>
