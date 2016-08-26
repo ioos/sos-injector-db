@@ -47,7 +47,7 @@ INSERT INTO observation (sensor_id, time, value) SELECT x.* FROM (
     SELECT a.id, DATEADD('HOUR', 0 - b.x, NOW()), ROUND(RAND() * 10 + 50, 2)
     FROM sensor a,
     (
-      SELECT x FROM system_range(0,99)
+      SELECT x FROM system_range(0,19)
     ) b
 ) x
 LEFT JOIN observation a
