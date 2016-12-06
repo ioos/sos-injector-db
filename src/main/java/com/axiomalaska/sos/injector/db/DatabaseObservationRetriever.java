@@ -39,16 +39,14 @@ public class DatabaseObservationRetriever implements ObservationRetriever {
             SosSensor sensor, Phenomenon phenomenon, DateTime startDate) {
         LOGGER.info("Retrieving observations for " + sensor + ", phenomenon " + phenomenon +", start time " + startDate);
 
-        if (DatabaseSosInjectorConfig.instance().getOverrideStartDate() != null &&
-                startDate.isBefore(DatabaseSosInjectorConfig.instance().getOverrideStartDate())) {
+        if (DatabaseSosInjectorConfig.instance().getOverrideStartDate() != null) {
             //override startDate
             startDate = DatabaseSosInjectorConfig.instance().getOverrideStartDate();
         }
         
         //set endDate default to now
         DateTime endDate = new DateTime(DateTimeZone.UTC);
-        if (DatabaseSosInjectorConfig.instance().getOverrideEndDate() != null &&
-                endDate.isAfter(DatabaseSosInjectorConfig.instance().getOverrideEndDate())) {
+        if (DatabaseSosInjectorConfig.instance().getOverrideEndDate() != null) {
             //override endDate
             endDate = DatabaseSosInjectorConfig.instance().getOverrideEndDate();
         }
