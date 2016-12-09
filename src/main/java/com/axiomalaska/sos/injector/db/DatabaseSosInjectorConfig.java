@@ -43,11 +43,14 @@ public class DatabaseSosInjectorConfig {
     private static final String PUBLISHER_COUNTRY = "publisher.country";
     private static final String PUBLISHER_EMAIL = "publisher.email";
     private static final String PUBLISHER_WEB_ADDRESS = "publisher.webAddress";
+
     private PublisherInfo publisherInfo;
 
     private DateTime overrideStartDate;
     private DateTime overrideEndDate;
-    
+
+    private DateTime forceStartDate;
+
     //private constructor
     private DatabaseSosInjectorConfig(){}
 
@@ -112,7 +115,11 @@ public class DatabaseSosInjectorConfig {
         }
         if (System.getProperty(DatabaseSosInjectorConstants.ENV_END_DATE) != null) {
             instance.overrideEndDate = DateTime.parse(System.getProperty(DatabaseSosInjectorConstants.ENV_END_DATE));
+        }
+        if (System.getProperty(DatabaseSosInjectorConstants.ENV_FORCE_START_DATE) != null) {
+            instance.forceStartDate = DateTime.parse(System.getProperty(DatabaseSosInjectorConstants.ENV_FORCE_START_DATE));
         }        
+
     }
 
     private static String getRequiredConfigString(Configuration config, String propertyName) {
@@ -155,5 +162,13 @@ public class DatabaseSosInjectorConfig {
 
     public DateTime getOverrideEndDate() {
         return overrideEndDate;
+    }
+
+    public DateTime getForceStartDate() {
+        return forceStartDate;
+    }
+
+    public void setForceStartDate(DateTime forceStartDate) {
+        this.forceStartDate = forceStartDate;
     }
 }

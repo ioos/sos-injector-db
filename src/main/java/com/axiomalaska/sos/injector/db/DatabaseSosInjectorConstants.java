@@ -48,4 +48,5 @@ public class DatabaseSosInjectorConstants {
     public static final String ENV_QUERY_PATH = "query_path";
     public static final String ENV_START_DATE = "start_date";
     public static final String ENV_END_DATE = "end_date";
+    public static final String ENV_FORCE_START_DATE = "force_start_date";
 }
